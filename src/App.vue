@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import ProductDisplay from "@/components/ProductDisplay.vue";
+import { ref } from 'vue';
+import ProductDisplay from '@/components/ProductDisplay.vue';
 
 const cart = ref(0);
-const premium = ref(true);
+const premium = ref(false);
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import socksGreenImage from "@/assets/images/socks_green.jpeg";
-import socksBlueImage from "@/assets/images/socks_blue.jpeg";
+import { ref, computed } from 'vue';
+import socksGreenImage from '@/assets/images/socks_green.jpeg';
+import socksBlueImage from '@/assets/images/socks_blue.jpeg';
+import ProductDetails from './ProductDetails.vue';
 
 const props = defineProps<{
   premium: boolean;
@@ -11,20 +12,20 @@ const emit = defineEmits<{
   addToCart: [];
 }>();
 
-const product = ref("Socks");
-const brand = ref("Vue Mastery");
+const product = ref('Socks');
+const brand = ref('Vue Mastery');
 
 const selectedVariant = ref(0);
 
-const details = ref(["50% cotton", "30% wool", "20% polyester"]);
+const details = ref(['50% cotton', '30% wool', '20% polyester']);
 
 const variants = ref([
-  { id: 2234, color: "green", image: socksGreenImage, quantity: 50 },
-  { id: 2235, color: "blue", image: socksBlueImage, quantity: 0 },
+  { id: 2234, color: 'green', image: socksGreenImage, quantity: 50 },
+  { id: 2235, color: 'blue', image: socksBlueImage, quantity: 0 },
 ]);
 
 const title = computed(() => {
-  return brand.value + " " + product.value;
+  return brand.value + ' ' + product.value;
 });
 
 const image = computed(() => {
@@ -35,7 +36,15 @@ const inStock = computed(() => {
   return variants.value[selectedVariant.value].quantity > 0;
 });
 
-const addToCart = () => emit("addToCart");
+const shipping = computed(() => {
+  if (props.premium) {
+    return 'Free';
+  } else {
+    return 2.99;
+  }
+});
+
+const addToCart = () => emit('addToCart');
 
 const updateVariant = (index: number) => {
   selectedVariant.value = index;
@@ -52,9 +61,8 @@ const updateVariant = (index: number) => {
         <h1>{{ title }}</h1>
         <p v-if="inStock">In Stock</p>
         <p v-else>Out of Stock</p>
-        <ul>
-          <li v-for="detail in details">{{ detail }}</li>
-        </ul>
+        <p>Shipping: {{ shipping }}</p>
+        <ProductDetails :details />
         <div
           v-for="(variant, index) in variants"
           :key="variant.id"
