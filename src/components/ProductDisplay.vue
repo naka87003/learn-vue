@@ -3,6 +3,8 @@ import { ref, computed } from 'vue';
 import socksGreenImage from '@/assets/images/socks_green.jpeg';
 import socksBlueImage from '@/assets/images/socks_blue.jpeg';
 import ProductDetails from './ProductDetails.vue';
+import ReviewForm from './ReviewForm.vue';
+import ReviewList from './ReviewList.vue';
 
 const props = defineProps<{
   premium: boolean;
@@ -24,6 +26,8 @@ const variants = ref([
   { id: 2234, color: 'green', image: socksGreenImage, quantity: 50 },
   { id: 2235, color: 'blue', image: socksBlueImage, quantity: 0 },
 ]);
+
+const reviews = ref<ProductReview[]>([]);
 
 const title = computed(() => {
   return brand.value + ' ' + product.value;
@@ -55,6 +59,10 @@ const remove = () => {
 
 const updateVariant = (index: number) => {
   selectedVariant.value = index;
+};
+
+const addReview = (review: ProductReview) => {
+  reviews.value.push(review);
 };
 </script>
 
@@ -88,5 +96,7 @@ const updateVariant = (index: number) => {
         <button class="button" @click="remove">Remove</button>
       </div>
     </div>
+    <ReviewList v-if="reviews.length > 0" :reviews />
+    <ReviewForm @review-submitted="addReview" />
   </div>
 </template>
